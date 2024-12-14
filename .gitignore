@@ -18,3 +18,4 @@ staticfiles/
 
 # Ignore other temporary files
 .DS_Store
+.env
