@@ -162,7 +162,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'theme/',  # Point to the theme's static directory
+    BASE_DIR / 'theme/static',  # Point to the theme's static directory
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
