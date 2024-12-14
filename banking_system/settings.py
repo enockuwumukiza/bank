@@ -20,13 +20,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Access the ALLOWED_HOSTS environment variable
+
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS.append('mybank-93n3.onrender.com')  # Add this line
 
 if re.match(r"^[a-z0-9\-]+\.onrender\.com$", os.getenv('HOSTNAME', '')):
     ALLOWED_HOSTS.append(os.getenv('HOSTNAME', ''))
 
-# Ensure no duplicates in ALLOWED_HOSTS
 ALLOWED_HOSTS = list(set(ALLOWED_HOSTS))
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
