@@ -96,6 +96,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         "DIRS": [
+            BASE_DIR / 'theme/templates',  # Correct path to templates
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -108,6 +109,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'banking_system.wsgi.application'
 
@@ -157,14 +159,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+STATIC_URL = '/static/'  # URL to access static files
+
+# Directory where static files are collected during deployment (e.g., to serve via a CDN or via WhiteNoise)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Additional static file directories to look in for assets like CSS, JS, etc.
 STATICFILES_DIRS = [
     BASE_DIR / 'theme/static',  # Point to the theme's static directory
 ]
 
+# Use WhiteNoise to serve static files more efficiently in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
