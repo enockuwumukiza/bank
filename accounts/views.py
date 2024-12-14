@@ -247,3 +247,10 @@ def pay_loan(request):
             return redirect('pay_loan')
 
     return render(request, 'pay_loan.html')
+
+
+def not_found_view(request, exception=None):
+    """
+    Render a custom 404 Not Found page.
+    """
+    return render(request, "404.html", status=404)

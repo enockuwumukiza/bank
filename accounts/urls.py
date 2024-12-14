@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.conf.urls import handler404
 from . import views
 
 urlpatterns = [
@@ -12,3 +13,5 @@ urlpatterns = [
     path('pay_loan/', views.pay_loan, name='pay_loan'),
     path('logout/', views.user_logout, name='logout'),
 ]
+
+handler404 = "accounts.views.not_found_view"
