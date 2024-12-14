@@ -1,0 +1,134 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Funds</title>
+    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% tailwind_css %}
+</head>
+
+<body class="bg-gray-50">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar -->
+        <aside
+            class="w-full md:w-64 bg-gradient-to-br from-blue-700 to-purple-600 text-white hidden md:flex flex-col justify-between">
+            <div>
+                <div class="p-6">
+                    <h1 class="text-3xl font-bold mb-4"><a href="/">MyBank</a></h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🏠
+                                Overview</a></li>
+                        <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">💳
+                                Accounts</a></li>
+                        <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🔄
+                                Transfers</a></li>
+                        <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">📄
+                                Transactions</a></li>
+                        <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">👤 Profile</a>
+                        </li>
+                        <li><a href="/dashboard" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition"> Dashboard</a>
+                        </li>
+                        <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🚪 Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <footer class="p-6">
+                <p class="text-sm">© 2024 MyBank</p>
+            </footer>
+        </aside>
+
+        <!-- Mobile Menu -->
+        <div
+            class="bg-gradient-to-br from-blue-700 to-purple-600 text-white p-4 flex md:hidden justify-between items-center">
+            <h1 class="text-2xl font-bold">MyBank</h1>
+            <button id="menuToggle" class="text-2xl focus:outline-none">☰</button>
+        </div>
+        <aside id="mobileMenu" class="hidden bg-gradient-to-br from-blue-700 to-purple-600 text-white w-full">
+            <nav>
+                <ul>
+                    <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🏠 Overview</a>
+                    </li>
+                    <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">💳 Accounts</a>
+                    </li>
+                    <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🔄 Transfers</a>
+                    </li>
+                    <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">📄
+                            Transactions</a></li>
+                    <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">👤 Profile</a>
+                    </li>
+                    <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🚪 Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-8">
+            <!-- Topbar -->
+            <header
+                class="flex flex-col md:flex-row justify-between items-center mb-8 bg-white shadow-md p-4 rounded-lg">
+                <h2 class="text-2xl font-bold text-gray-700 mb-4 md:mb-0">Deposit Funds</h2>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">🔔
+                        Notifications</button>
+                    <div class="w-12 h-12 bg-gray-300 rounded-full border-2 border-blue-600"></div>
+                </div>
+            </header>
+
+            <!-- Deposit Form -->
+            <section class="bg-white shadow-lg rounded-lg p-6">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">💰 Deposit Funds</h3>
+                <form action="{% url 'deposit' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="depositAmount" class="block text-gray-700 font-medium">Deposit Amount</label>
+                        <input type="number" id="depositAmount" name="amount"
+                            class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter amount">
+                    </div>
+                    <div class="mb-6">
+                        <label for="depositMethod" class="block text-gray-700 font-medium">Payment Method</label>
+                        <select id="depositMethod" name="payment_method"
+                            class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="bank">Bank Transfer</option>
+                            <option value="card">Credit/Debit Card</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
+                    </div>
+                    <button type="submit"
+                        class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Deposit
+                        Funds</button>
+                </form>
+                {% if messages %}
+                <ul class="mt-4">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,88 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Open Account</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% tailwind_css %}
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-blue-200 min-h-screen flex items-center justify-center">
+
+    <div class="bg-white shadow-2xl rounded-lg p-8 w-full max-w-2xl">
+        <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">
+            Open a New Account
+        </h2>
+        <form action="{% url 'account' %}" method="POST" class="space-y-6">
+            {% csrf_token %}
+
+            
+            <div>
+                <label for="full_name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                <input type="text" name="full_name" id="full_name" placeholder="Enter your full name"
+                    class="input input-bordered input-primary w-full focus:ring focus:ring-blue-300" required />
+            </div>
+
+            <div>
+                <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                <input type="email" name="email" id="email" placeholder="Enter your email address"
+                    class="input input-bordered input-primary w-full focus:ring focus:ring-blue-300" required />
+            </div>
+
+           
+            <div>
+                <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                <input type="text" name="phone" id="phone" placeholder="Enter your phone number"
+                    class="input input-bordered input-primary w-full focus:ring focus:ring-blue-300" required />
+            </div>
+
+          
+            <div>
+                <label for="account_type" class="block text-gray-700 font-medium mb-2">Account Type</label>
+                <select name="account_type" id="account_type"
+                    class="select select-primary w-full focus:ring focus:ring-blue-300" required>
+                    <option disabled selected>Select an account type</option>
+                    <option value="savings">Savings</option>
+                    <option value="checking">Checking</option>
+                    <option value="business">Business</option>
+                </select>
+            </div>
+
+            
+            <div>
+                <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+                <input type="password" name="password" id="password" placeholder="Create a strong password"
+                    class="input input-bordered input-primary w-full focus:ring focus:ring-blue-300" required />
+            </div>
+
+           
+            <div>
+                <label for="confirm_password" class="block text-gray-700 font-medium mb-2">Confirm Password</label>
+                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm your password"
+                    class="input input-bordered input-primary w-full focus:ring focus:ring-blue-300" required />
+            </div>
+
+           
+            <div>
+                <button type="submit"
+                    class="btn btn-primary w-full bg-blue-500 hover:bg-blue-600 border-0 focus:ring focus:ring-blue-300">
+                    Open Account
+                </button>
+            </div>
+        </form>
+
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li class="text-red-500">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>

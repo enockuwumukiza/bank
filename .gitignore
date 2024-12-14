@@ -1,0 +1,20 @@
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore __pycache__ and compiled files
+__pycache__/
+*.pyc
+
+# Ignore database backups
+*.sqlite3-journal
+
+# Ignore IDE-specific files
+*.vscode/
+.idea/
+
+# Ignore static files (optional, if regenerated during setup)
+staticfiles/
+
+# Ignore other temporary files
+.DS_Store

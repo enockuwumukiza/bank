@@ -1,0 +1,162 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    {% tailwind_css %}
+</head>
+
+<body class="bg-gray-50">
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar -->
+        <div class="block md:hidden bg-blue-600 text-white px-4 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold"><a href="/">MyBank</a></h1>
+            <button id="toggleSidebar" class="text-xl">☰</button>
+        </div>
+        <aside
+            class="w-full md:w-64 bg-gradient-to-br from-blue-700 to-purple-600 text-white flex flex-col justify-between hidden md:block">
+            <div>
+                <div class="p-6">
+                    <h1 class="text-3xl font-bold mb-4"><a href="/">MyBank</a></h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🏠
+                                Overview</a></li>
+                        <li><a href="#" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">💳
+                                Accounts</a></li>
+                        <li><a href="/pay_loan" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🔄
+                                Pay loan</a></li>
+                        <li><a href="/deposit" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">📄
+                                Deposit</a></li>
+                        <li><a href="/withdraw" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">📄
+                                Withdraw</a></li>
+                        <li><a href="/loan" class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🥞Get Loan</a>
+                        </li>
+                        <li><a href="{% url 'logout' %}"
+                                class="block py-3 px-6 hover:bg-purple-500 rounded-md transition">🚪 Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <footer class="p-6">
+                <p class="text-sm">© 2024 MyBank</p>
+            </footer>
+        </aside>
+
+        <!-- Mobile Sidebar Toggle -->
+        
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-8">
+            <!-- Topbar -->
+            <header class="flex flex-wrap justify-between items-center mb-8 bg-white shadow-md p-4 rounded-lg">
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-700">Welcome, {{ user_name }}</h2>
+                <p class="text-xl sm:text-2xl font-bold text-sky-900">Your balance: Rwf {{ balance }}</p>
+                <div class="flex items-center space-x-2 sm:space-x-4 mt-4 sm:mt-0">
+                    <button class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">🔔
+                        Notifications</button>
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-300 rounded-full border-2 border-blue-600"></div>
+                </div>
+            </header>
+
+            <!-- Dashboard Cards -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
+                <div
+                    class="bg-gradient-to-r from-green-400 to-green-600 text-white p-6 rounded-lg shadow hover:scale-105 transform transition">
+                    <h3 class="text-lg sm:text-xl font-bold">💰 Total Balance</h3>
+                    <p class="text-2xl sm:text-3xl mt-2">Rwf {{ balance }}</p>
+                </div>
+                <div
+                    class="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-6 rounded-lg shadow hover:scale-105 transform transition">
+                    <h3 class="text-lg sm:text-xl font-bold">📊 Recent Transactions</h3>
+                    <p class="text-2xl sm:text-3xl mt-2">15</p>
+                </div>
+                <div
+                    class="bg-gradient-to-r from-red-400 to-red-600 text-white p-6 rounded-lg shadow hover:scale-105 transform transition">
+                    <h3 class="text-lg sm:text-xl font-bold">📈 Active Loans</h3>
+                    <p class="text-2xl sm:text-3xl mt-2">Rwf {{ context.loan_amount }}</p>
+                </div>
+            </section>
+
+            <!-- Chart Placeholder -->
+            <section class="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-lg sm:text-xl font-bold mb-4">📊 Account Activity</h3>
+                <canvas id="chart"></canvas>
+            </section>
+
+            <!-- Transaction History -->
+            <section class="bg-white rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-bold p-4 sm:p-6">💳 Recent Transactions</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full table-auto text-left">
+                        <thead class="bg-gray-100 text-gray-700">
+                            <tr>
+                                <th class="px-4 sm:px-6 py-3">Date</th>
+                                <th class="px-4 sm:px-6 py-3">Description</th>
+                                <th class="px-4 sm:px-6 py-3 text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 sm:px-6 py-4">12/01/2024</td>
+                                <td class="px-4 sm:px-6 py-4">ATM Withdrawal</td>
+                                <td class="px-4 sm:px-6 py-4 text-right text-red-600">- Rwf 200,000</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 sm:px-6 py-4">11/30/2024</td>
+                                <td class="px-4 sm:px-6 py-4">Salary Credit</td>
+                                <td class="px-4 sm:px-6 py-4 text-right text-green-600">+ Rwf 3,000,000</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 sm:px-6 py-4">11/28/2024</td>
+                                <td class="px-4 sm:px-6 py-4">Loan Payment</td>
+                                <td class="px-4 sm:px-6 py-4 text-right text-red-600">- Rwf 500,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Sidebar Toggle
+            const toggleSidebarButton = document.getElementById('toggleSidebar');
+            const sidebar = document.querySelector('aside');
+            toggleSidebarButton.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+            });
+        });
+    </script>
+    <script>
+        const ctx = document.getElementById('chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                datasets: [{
+                    label: 'Account Activity',
+                    data: [1200, 1900, 3000, 5000, 2000],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
