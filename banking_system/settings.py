@@ -96,7 +96,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         "DIRS": [
-            BASE_DIR / 'theme/templates',  # Correct path to templates
+
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -168,9 +168,10 @@ STATIC_URL = '/static/'  # URL to access static files
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Additional static file directories to look in for assets like CSS, JS, etc.
-STATICFILES_DIRS = [
-    BASE_DIR / 'theme/static',  # Point to the theme's static directory
-]
+
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'theme/static',  # Point to the theme's static directory
+# ]
 
 # Use WhiteNoise to serve static files more efficiently in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
