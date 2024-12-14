@@ -14,4 +14,4 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
 ]
 
-handler404 = "accounts.views.not_found_view"
+# handler404 = "accounts.views.not_found_view"
