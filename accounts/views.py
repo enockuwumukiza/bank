@@ -186,6 +186,11 @@ def loan_application(request):
         form = LoanApplicationForm()
 
     return render(request, 'loan.html', {'form': form, 'loan': loan})
+from decimal import Decimal, InvalidOperation
+from django.db import transaction
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 @login_required
 def pay_loan(request):
@@ -195,6 +200,8 @@ def pay_loan(request):
             # Convert payment amount to Decimal for precision
             payment_amount = Decimal(request.POST.get('amount'))
             
+            user_account = request.user
+
             if payment_amount <= 0:
                 messages.error(request, "Payment amount must be greater than zero.")
                 return redirect('pay_loan')
@@ -217,9 +224,20 @@ def pay_loan(request):
                 current_loan.save()
                 messages.success(request, "Your loan has been fully paid!")
             else:
-                # Otherwise, reduce the loan balance
-                current_loan.amount -= payment_amount
-                current_loan.save()
+                # Check if the user has enough balance
+                if user_account.balance < payment_amount:
+                    messages.error(request, f'Insufficient balance -- your balance is Rwf {user_account.balance}')
+                    return redirect('withdraw')  # Redirect to a withdrawal page
+                
+                # Otherwise, reduce the loan balance and update the user's account balance
+                with transaction.atomic():
+                    current_loan.amount -= payment_amount
+                    current_loan.save()
+
+                    # Update the user's balance
+                    user_account.balance -= payment_amount
+                    user_account.save()
+
                 messages.success(request, "Your payment was successful. Loan balance updated.")
 
             return redirect('dashboard')  # Redirect to a success page or dashboard
