@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import dj_database_url
 import os
+import re
 from dotenv import load_dotenv
 
 # Load environment variables from the .env file
@@ -20,6 +21,12 @@ load_dotenv()
 
 # Access the ALLOWED_HOSTS environment variable
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+
+if re.match(r"^[a-z0-9\-]+\.onrender\.com$", os.getenv('HOSTNAME', '')):
+    ALLOWED_HOSTS.append(os.getenv('HOSTNAME', ''))
+
+# Ensure no duplicates in ALLOWED_HOSTS
+ALLOWED_HOSTS = list(set(ALLOWED_HOSTS))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -104,12 +111,12 @@ WSGI_APPLICATION = 'banking_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3')
 }
+
 
 
 # Password validation
@@ -149,6 +156,11 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'theme/static'),  # Point to the theme's static directory
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
